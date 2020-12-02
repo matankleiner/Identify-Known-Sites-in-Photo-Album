@@ -22,7 +22,7 @@ gc.enable()
 # Load classes and I/O labels of Places365 Dataset 
 def load_labels():
     # prepare all the labels
-    # scene category relevant
+    # load scene category relevant
     file_name_category = 'categories_places365.txt'
     if not os.access(file_name_category, os.W_OK):
         synset_url = 'https://raw.githubusercontent.com/csailvision/places365/master/categories_places365.txt'
@@ -33,7 +33,7 @@ def load_labels():
             classes.append(line.strip().split(' ')[0][3:])
     classes = tuple(classes)
 
-    # indoor and outdoor relevant
+    # load indoor and outdoor relevant
     file_name_IO = 'IO_places365.txt'
     if not os.access(file_name_IO, os.W_OK):
         synset_url = 'https://raw.githubusercontent.com/csailvision/places365/master/IO_places365.txt'
@@ -51,18 +51,18 @@ def load_labels():
 def returnTF():
 # load the image transformer
     tf = trn.Compose([
-        trn.ToPILImage(),
+        trn.ToPILImage(), # Convert a tensor or an ndarray to PIL Image
         trn.Resize((224,224)),
         trn.ToTensor(),
-        trn.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        trn.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]) # FIXME: chechk numbers
     ])
     return tf
 
 # Load Pretrained Weights & Create Model
 def hook_feature(module, input, output):
-    features_blobs.append(np.squeeze(output.data.cpu().numpy()))
+    features_blobs.append(np.squeeze(output.data.cpu().numpy())) # np.squeeze - remove single-dimensional entries from the shape of an array.
 
-
+# ???
 def recursion_change_bn(module):
     if isinstance(module, torch.nn.BatchNorm2d):
         module.track_running_stats = 1
@@ -79,7 +79,7 @@ def load_model():
         os.system('wget http://places2.csail.mit.edu/models_places365/' + model_file)
         os.system('wget https://raw.githubusercontent.com/csailvision/places365/master/wideresnet.py')
 
-    import wideresnet
+    import wideresnet #???
     model = wideresnet.resnet18(num_classes=365)
     checkpoint = torch.load(model_file, map_location=lambda storage, loc: storage)
     state_dict = {str.replace(k, 'module.', ''): v for k, v in checkpoint['state_dict'].items()}
