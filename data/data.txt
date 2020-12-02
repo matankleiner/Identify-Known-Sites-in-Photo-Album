@@ -1,0 +1,73 @@
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 1580470 entries, 0 to 1580469
+Data columns (total 2 columns):
+ #   Column       Non-Null Count    Dtype 
+---  ------       --------------    ----- 
+ 0   id           1580470 non-null  object
+ 1   landmark_id  1580470 non-null  int64 
+dtypes: int64(1), object(1)
+memory usage: 24.1+ MB
+
+number of ids is: 1580470
+
+number of unique values in landmark_id column is: 81313
+
+top 5 classes:
+138982    6272
+126637    2231
+20409     1758
+83144     1741
+113209    1135
+Name: landmark_id, dtype: int64
+
+bottom 5 classes:
+180503    2
+179834    2
+183115    2
+63266     2
+197219    2
+Name: landmark_id, dtype: int64
+
+more than half of the classes contain 9 or less objects! 
+
+some objects from the top class: 
+                       id  landmark_id
+1077244  0006f34cf361f69c       138982
+1077245  0010089264bb0573       138982
+1077246  001734558e2fde76       138982
+1077247  002f0924a58dfc46       138982
+1077248  002ffa2d61d4190f       138982
+...                   ...          ...
+1083511  ffc7eb8c2f216c85       138982
+1083512  ffcc4c0f61b254c0       138982
+1083513  ffdb7ec1b164f10f       138982
+1083514  ffe4999cd81b3775       138982
+1083515  fffa5d86cbbae4cb       138982
+
+[6272 rows x 2 columns]
+
+some objects from the 2nd top class: 
+                      id  landmark_id
+980806  000b0d1da1f48a3f       126637
+980807  0014ed3f568a680e       126637
+980808  0024d95487eb0cb1       126637
+980809  0053c9bc80c2001c       126637
+980810  00762370abaf613a       126637
+...                  ...          ...
+983032  ffaee13df7a708d7       126637
+983033  ffbedc6246ab4208       126637
+983034  ffc6cbccd19e6ff8       126637
+983035  fff55e67f01013c2       126637
+983036  fff7d21c41f0d636       126637
+
+[2231 rows x 2 columns]
+
+a class with only 2 objects:
+                      id  landmark_id
+496378  0c2f790b3900cb38        63266
+496379  e702c453f32eff43        63266
+
+another one: 
+                       id  landmark_id
+1404321  28a296f551880422       180503
+1404322  89dbdaa7ad33786a       180503

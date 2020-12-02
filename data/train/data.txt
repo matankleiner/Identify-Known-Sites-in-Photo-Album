@@ -1,0 +1,54 @@
+RangeIndex: 1580470 entries, 0 to 1580469
+Data columns (total 2 columns):
+ #   Column       Non-Null Count    Dtype 
+---  ------       --------------    ----- 
+ 0   id           1580470 non-null  object
+ 1   landmark_id  1580470 non-null  int64 
+dtypes: int64(1), object(1)
+memory usage: 24.1+ MB
+
+number of ids is: 1580470
+
+number of unique values in landmark_id column is: 81313
+
+the 5 classes with most items:
+138982    6272
+126637    2231
+20409     1758
+83144     1741
+113209    1135
+Name: landmark_id, dtype: int64
+
+the 5 classes with least items:
+180503    2
+179834    2
+183115    2
+63266     2
+197219    2
+Name: landmark_id, dtype: int64
+
+some id's of the class with most items in it: 
+                       id  landmark_id
+1077244  0006f34cf361f69c       138982
+1077245  0010089264bb0573       138982
+1077246  001734558e2fde76       138982
+1077247  002f0924a58dfc46       138982
+1077248  002ffa2d61d4190f       138982
+...                   ...          ...
+1083511  ffc7eb8c2f216c85       138982
+1083512  ffcc4c0f61b254c0       138982
+1083513  ffdb7ec1b164f10f       138982
+1083514  ffe4999cd81b3775       138982
+1083515  fffa5d86cbbae4cb       138982
+
+[6272 rows x 2 columns]
+
+the id's of a class with 2 items in it: 
+                       id  landmark_id
+1404321  28a296f551880422       180503
+1404322  89dbdaa7ad33786a       180503
+
+another one: 
+                      id  landmark_id
+496378  0c2f790b3900cb38        63266
+496379  e702c453f32eff43        63266
