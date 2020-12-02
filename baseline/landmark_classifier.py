@@ -62,7 +62,7 @@ def returnTF():
 def hook_feature(module, input, output):
     features_blobs.append(np.squeeze(output.data.cpu().numpy())) # np.squeeze - remove single-dimensional entries from the shape of an array.
 
-# ???
+# ?????
 def recursion_change_bn(module):
     if isinstance(module, torch.nn.BatchNorm2d):
         module.track_running_stats = 1
