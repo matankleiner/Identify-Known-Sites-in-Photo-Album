@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import gc
 gc.enable()
 
-# Load classes and I/O labels of Places365 Dataset
+# Load classes and I/O labels of Places365 Dataset - changes 
 def load_labels():
     # prepare all the labels
     # scene category relevant
