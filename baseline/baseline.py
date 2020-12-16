@@ -1,12 +1,5 @@
 # !/usr/bin/env python
 
-######################################
-## NOTE: Requires pip install
-##!pip install efficientnet_pytorch - https://pypi.org/project/efficientnet-pytorch/
-##!pip install torch_optimizer - https://pypi.org/project/torch-optimizer/
-######################################
-
-
 import os
 import gc
 gc.enable()
@@ -30,6 +23,12 @@ import torch_optimizer as optim  # documentation - https://pytorch-optimizer.rea
 import warnings
 warnings.filterwarnings("ignore")
 
+######################################
+## NOTE: Requires pip install
+##!pip install efficientnet_pytorch - https://pypi.org/project/efficientnet-pytorch/
+##!pip install torch_optimizer - https://pypi.org/project/torch-optimizer/
+######################################
+
 # Train Configuration - FIXME: CHANGES NEED TO BE MADE!
 IN_KERNEL = os.environ.get('KAGGLE_WORKING_DIR') is not None
 MIN_SAMPLES_PER_CLASS = 150  # threshold for total number of images in a class. if a class has less than this then it will be discarded from the training set.
@@ -41,10 +40,10 @@ LOG_FREQ = 10
 NUM_TOP_PREDICTS = 20
 
 # Read Train and Test as pandas dataframe - FIXME: SHOULD CHANGE THE PATH
-train = pd.read_csv('../input/landmark-recognition-2020/train.csv')
-test = pd.read_csv('../input/landmark-recognition-2020/sample_submission.csv')
-train_dir = '../input/landmark-recognition-2020/train/'
-test_dir = '../input/landmark-recognition-2020/test/'
+train = pd.read_csv('train_set_kaggle_2020/train/train.csv')
+test = pd.read_csv('test_set_kaggle_2019/recognition_solution_v2.1.csv')
+train_dir = 'train_set_kaggle_2020/train/'
+test_dir = 'test_set_kaggle_2019/'
 
 
 # Data Loader
