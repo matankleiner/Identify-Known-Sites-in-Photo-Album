@@ -1,0 +1,9 @@
+pandas 
+numpy 
+PIL 
+sklearn 
+torch 
+torchvision 
+tqdm 
+efficientnet_pytorch
+torch_optimizer

@@ -1,7 +1,9 @@
 # !/usr/bin/env python
 
+import sys
 import os
 import gc
+
 gc.enable()
 import time
 
@@ -9,39 +11,32 @@ import pandas as pd
 import numpy as np
 from PIL import Image
 import multiprocessing
-from sklearn.preprocessing import LabelEncoder  # documentation -  https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html
+from sklearn.preprocessing import \
+    LabelEncoder  # documentation -  https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html
 
 import torch
 from torchvision import transforms  # documentation - https://pytorch.org/docs/stable/torchvision/transforms.html
 import torch.nn as nn
-from torch.optim import lr_scheduler
 from torch.utils.data import DataLoader, Dataset  # documentation - https://pytorch.org/docs/stable/data.html
 from tqdm import tqdm
 from efficientnet_pytorch import EfficientNet
 import torch_optimizer as optim  # documentation - https://pytorch-optimizer.readthedocs.io/en/latest/
 
 import warnings
+
 warnings.filterwarnings("ignore")
 
-######################################
-## NOTE: Requires pip install
-##!pip install efficientnet_pytorch - https://pypi.org/project/efficientnet-pytorch/
-##!pip install torch_optimizer - https://pypi.org/project/torch-optimizer/
-######################################
-
-# Train Configuration - FIXME: CHANGES NEED TO BE MADE!
-IN_KERNEL = os.environ.get('KAGGLE_WORKING_DIR') is not None
-MIN_SAMPLES_PER_CLASS = 150  # threshold for total number of images in a class. if a class has less than this then it will be discarded from the training set.
+# Train Configuration
+MIN_SAMPLES_PER_CLASS = 5  # threshold for total number of images in a class. if a class has less than this then it will be discarded from the training set.
 BATCH_SIZE = 64
-NUM_WORKERS = multiprocessing.cpu_count()
-MAX_STEPS_PER_EPOCH = 15000
-NUM_EPOCHS = 1
 LOG_FREQ = 10
 NUM_TOP_PREDICTS = 20
+MODEL_PATH = "model2.pt"
 
-# Read Train and Test as pandas dataframe - FIXME: SHOULD CHANGE THE PATH
+# Read Train and Test as pandas data frame
 train = pd.read_csv('train_set_kaggle_2020/train/train.csv')
 test = pd.read_csv('test_set_kaggle_2019/recognition_solution_v2.1.csv')
+# path to train and test directory
 train_dir = 'train_set_kaggle_2020/train/'
 test_dir = 'test_set_kaggle_2019/'
 
@@ -96,27 +91,25 @@ class ImageDataset(Dataset):
         image = Image.open(image_path)
         image = self.transforms(image)  # apply the chosen transformation on a given image
 
-        if self.mode == 'test':  # ??? maybe change this for our purposes ???
-            return {'image': image}
+        if self.mode == 'test':
+            return {'image': image,
+                    'target': self.df.iloc[index].landmarks}
         else:  # train mode
             return {'image': image,
                     'target': self.df.iloc[index].landmark_id}
 
+
 # Load Data
 def load_data(train, test, train_dir, test_dir):
     counts = train.landmark_id.value_counts()
-    selected_classes = counts[counts >= MIN_SAMPLES_PER_CLASS].index  # select only classes with minimum amount of objects
+    selected_classes = counts[
+        counts >= MIN_SAMPLES_PER_CLASS].index  # select only classes with minimum amount of objects
     num_classes = selected_classes.shape[0]
     print('classes with at least N samples:', num_classes)
 
     train = train.loc[train.landmark_id.isin(selected_classes)]
     print('train_df', train.shape)
     print('test_df', test.shape)
-
-    # filter non-existing test images
-    exists = lambda img: os.path.exists(f'{test_dir}/{img[0]}/{img[1]}/{img[2]}/{img}.jpg')
-    test = test.loc[test.id.apply(exists)]
-    print('test_df after filtering', test.shape)
 
     label_encoder = LabelEncoder()  # Encode target labels with value between 0 and N-1. This transformer should be used to encode target values, i.e. y, and not the input x.
     label_encoder.fit(train.landmark_id.values)
@@ -130,16 +123,15 @@ def load_data(train, test, train_dir, test_dir):
 
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE,
                               shuffle=False, num_workers=4,
-                              drop_last=True)  # NEED TO CHECK: num_workers ( how many subprocesses to use for data loading.)
+                              drop_last=True)
 
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE,
-                             shuffle=False, num_workers=NUM_WORKERS)
+                             shuffle=False, num_workers=4)
 
     return train_loader, test_loader, label_encoder, num_classes
 
 
 # Optimizer - RAdam https://pytorch-optimizer.readthedocs.io/en/latest/api.html#radam
-# FIXME: change the optimizer or change the params as described in other papers
 def radam(parameters, lr=1e-3, betas=(0.9, 0.999), eps=1e-8, weight_decay=0):
     if isinstance(betas, str):
         betas = eval(betas)
@@ -163,6 +155,7 @@ class AverageMeter:
         self.sum += val * n
         self.count += n
         self.avg = self.sum / self.count
+
 
 def GAP(predicts: torch.Tensor, confs: torch.Tensor, targets: torch.Tensor) -> float:
     # Simplified GAP@1 metric: only one prediction per sample is supported
@@ -191,82 +184,86 @@ def GAP(predicts: torch.Tensor, confs: torch.Tensor, targets: torch.Tensor) -> f
     res /= targets.shape[0]  # FIXME: incorrect, not all test images depict landmarks ???
     return res
 
+
 # Model - https://pypi.org/project/efficientnet-pytorch/
 class EfficientNetEncoderHead(nn.Module):
     def __init__(self, depth, num_classes):
         super(EfficientNetEncoderHead, self).__init__()
         self.depth = depth
         self.base = EfficientNet.from_pretrained(f'efficientnet-b{self.depth}')
-        self.avg_pool = nn.AdaptiveAvgPool2d(1) # Applies a 2D adaptive average pooling over an input signal composed of several input planes.
+        self.avg_pool = nn.AdaptiveAvgPool2d(
+            1)  # Applies a 2D adaptive average pooling over an input signal composed of several input planes.
         self.output_filter = self.base._fc.in_features
-        self.classifier = nn.Linear(self.output_filter, num_classes) # Applies a linear transformation to the incoming data
+        self.classifier = nn.Linear(self.output_filter,
+                                    num_classes)  # Applies a linear transformation to the incoming data
 
     def forward(self, x):
-        x = self.base.extract_features(x) # extract features based on EfficientNet
+        x = self.base.extract_features(x)  # extract features based on EfficientNet
         x = self.avg_pool(x).squeeze(-1).squeeze(-1)
         x = self.classifier(x)
         return x
 
+
 # Training
-def train_step(train_loader, model, criterion, optimizer, epoch, lr_scheduler):
+def train_step(train_loader, model, criterion, optimizer, epoch):
     print(f'epoch {epoch}')
-    batch_time = AverageMeter() # AverageMeter is the metrics class
+    batch_time = AverageMeter()  # AverageMeter is the metrics class
     losses = AverageMeter()
     avg_score = AverageMeter()
 
     model.train()
-    num_steps = min(len(train_loader), MAX_STEPS_PER_EPOCH)
+    num_steps = len(train_loader)
 
     print(f'total batches: {num_steps}')
 
     end = time.time()
-    lr = None
 
-    print("\nepoch    batch             time    (avg time)        loss   (avg loss)    GAP score   (avg score)              lr")
-    print("-------------------------------------------------------------------------------------------------------------------------")
-    for i, data in enumerate(train_loader):
-        input_ = data['image']
-        target = data['target']
-        batch_size, _, _, _ = input_.shape
+    original_stdout = sys.stdout
+    with open('baseline epoch=5 min_sample=5.txt', 'w') as f:
+        sys.stdout = f
+        print("\nepoch    batch             time    (avg time)        loss   (avg loss)    GAP score   (avg score)")
+        print(
+            "---------------------------------------------------------------------------------------------------------")
+        for i, data in enumerate(train_loader):
+            input_ = data['image']
+            target = data['target']
+            batch_size, _, _, _ = input_.shape
 
-        output = model(input_.cuda())
-        loss = criterion(output, target.cuda())
-        confs, predicts = torch.max(output.detach(), dim=1)
-        avg_score.update(GAP(predicts, confs, target))
-        losses.update(loss.data.item(), input_.size(0))
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-        lr_scheduler.step()
-        lr = optimizer.param_groups[0]['lr']
+            output = model(input_.cuda())
+            loss = criterion(output, target.cuda())
+            confs, predicts = torch.max(output.detach(), dim=1)
+            avg_score.update(GAP(predicts, confs, target))
+            losses.update(loss.data.item(), input_.size(0))
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
 
-        batch_time.update(time.time() - end)
-        end = time.time()
+            batch_time.update(time.time() - end)
+            end = time.time()
 
-        if i % LOG_FREQ == 0:
-            print(f'{epoch}     |  [{i}/{num_steps}]\t||'
-                  f' {batch_time.val:.3f} | ({batch_time.avg:.3f})\t||'
-                  f' {losses.val:.4f} | ({losses.avg:.4f})\t||'
-                  f' {avg_score.val:.4f}   |   ({avg_score.avg:.4f})\t||'
-                  + str(lr))
+            if i % LOG_FREQ == 0:
+                print(f'{epoch}     |  [{i}/{num_steps}]\t||'
+                      f' {batch_time.val:.3f} | ({batch_time.avg:.3f})\t||'
+                      f' {losses.val:.4f} | ({losses.avg:.4f})\t||'
+                      f' {avg_score.val:.4f}   |   ({avg_score.avg:.4f})\t||')
 
-    print(f' * average GAP on train {avg_score.avg:.4f}')
+        print(f' * average GAP on train {avg_score.avg:.4f}')
+        sys.stdout = original_stdout
+
+    torch.save(model.state_dict(), MODEL_PATH)
 
 
-# Inference Function
-def inference(data_loader, model):
+# Inference (evaluation) Function
+def inference(data_loader, model, label_encoder):
+    model.load_state_dict(torch.load(MODEL_PATH))
     model.eval()
 
     activation = nn.Softmax(dim=1)
     all_predicts, all_confs, all_targets = [], [], []
 
     with torch.no_grad():
-        for i, data in enumerate(tqdm(data_loader, disable=IN_KERNEL)):
-            if data_loader.dataset.mode != 'test':
-                input_, target = data['image'], data['target']
-            else:
-                input_, target = data['image'], None
-
+        for i, data in enumerate(tqdm(data_loader)):
+            input_, target = data['image'], data['target']
             output = model(input_.cuda())
             output = activation(output)
 
@@ -281,34 +278,12 @@ def inference(data_loader, model):
     confs = torch.cat(all_confs)
     targets = torch.cat(all_targets) if len(all_targets) else None
 
-    return predicts, confs, targets
-
-
-# Submission
-def generate_submission(test_loader, model, label_encoder):
-    sample_sub = pd.read_csv('../input/landmark-recognition-2020/sample_submission.csv')
-
-    predicts_gpu, confs_gpu, _ = inference(test_loader, model)
-    predicts, confs = predicts_gpu.cpu().numpy(), confs_gpu.cpu().numpy()
-
-    labels = [label_encoder.inverse_transform(pred) for pred in predicts]
+    predicts_, confs_ = predicts.cpu().numpy(), confs.cpu().numpy()
+    labels = [label_encoder.inverse_transform(pred) for pred in predicts_]
     print('labels')
     print(np.array(labels))
     print('confs')
-    print(np.array(confs))
-
-    sub = test_loader.dataset.df
-
-    def concat(label: np.ndarray, conf: np.ndarray) -> str:
-        return ' '.join([f'{L} {c}' for L, c in zip(label, conf)])
-
-    sub['landmarks'] = [concat(label, conf) for label, conf in zip(labels, confs)]
-
-    sample_sub = sample_sub.set_index('id')
-    sub = sub.set_index('id')
-    sample_sub.update(sub)
-
-    sample_sub.to_csv('submission.csv')
+    print(np.array(confs_))
 
 
 # Main
@@ -322,11 +297,10 @@ if __name__ == '__main__':
     criterion = nn.CrossEntropyLoss()
 
     optimizer = radam(model.parameters(), lr=1e-3, betas=(0.9, 0.999), eps=1e-3, weight_decay=1e-4)
-    scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=len(train_loader) * NUM_EPOCHS, eta_min=1e-6)
 
-    for epoch in range(1, NUM_EPOCHS + 1):
-        print('-' * 50)
-        train_step(train_loader, model, criterion, optimizer, epoch, scheduler)
+    for epoch in range(1, 6):
+        print('!' * 75)
+        train_step(train_loader, model, criterion, optimizer, epoch)
 
-    #print('inference mode')
-    #generate_submission(test_loader, model, label_encoder)
+    # print('inference mode')
+    # inference(test_loader, model, label_encoder)
