@@ -1,4 +1,4 @@
-# !/usr/bin/env python
+# !/usr/bin/env python3.6
 
 import sys
 import os
@@ -25,14 +25,16 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # Train Configuration 
-MIN_SAMPLES_PER_CLASS = 10  # threshold for total number of images in a class. if a class has less than this then it will be discarded from the training set.
+MIN_SAMPLES_PER_CLASS = 50  # threshold for total number of images in a class. if a class has less than this then it will be discarded from the training set.
 BATCH_SIZE = 64
 LOG_FREQ = 10
 NUM_TOP_PREDICTS = 20
+EPOCHS = 10
 
-# dd/mm/YY H:M:S
-dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-MODEL_PATH = "model"+dt_string+".pt"
+## dd/mm/YY H:M:S
+#dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+#MODEL_PATH = "model"+dt_string+".pt"
+MODEL_PATH = "model1.pt"
 
 # Read Train and Test as pandas data frame
 train = pd.read_csv('train_set_kaggle_2020/train/train.csv')
@@ -41,7 +43,7 @@ test = pd.read_csv('test_set_kaggle_2019/recognition_solution_v2.1.csv')
 train_dir = 'train_set_kaggle_2020/train/'
 test_dir = 'test_set_kaggle_2019/'
 
-# Data Loader
+# create a data set 
 class ImageDataset(Dataset):
     def __init__(self, dataframe: pd.DataFrame, image_dir: str, mode: str):
         self.df = dataframe
@@ -69,10 +71,10 @@ class ImageDataset(Dataset):
                 ]),
                 transforms.ToTensor(),
                 transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                     std=[0.229, 0.224, 0.225]),  # !!! check and validate those numbers !!!
+                                     std=[0.229, 0.224, 0.225]),  
             ]
         else:  # test mode
-            transforms_list.extend([  # ??? why extend and not simply like the train option? ???
+            transforms_list.extend([  
                 # The resize need to be same as train
                 transforms.Resize((64, 64)),
                 transforms.ToTensor(),
@@ -91,18 +93,17 @@ class ImageDataset(Dataset):
         image = self.transforms(image)  # apply the chosen transformation on a given image
 
         if self.mode == 'test':
-            return {'image': image,
-                    'target': self.df.iloc[index].landmarks}
+            return {'image': image}
         else:  # train mode
             return {'image': image,
                     'target': self.df.iloc[index].landmark_id}
 
-# Load Data
+# load datat using DataLoader
 def load_data(train, test, train_dir, test_dir):
     counts = train.landmark_id.value_counts()
     selected_classes = counts[counts >= MIN_SAMPLES_PER_CLASS].index  # select only classes with minimum amount of objects
     num_classes = selected_classes.shape[0]
-    print('classes with at least N samples:', num_classes)
+    print(f'classes with at least {MIN_SAMPLES_PER_CLASS} samples:', num_classes)
 
     train = train.loc[train.landmark_id.isin(selected_classes)]
     print('train_df', train.shape)
@@ -154,9 +155,6 @@ class AverageMeter:
 
 def GAP(predicts: torch.Tensor, confs: torch.Tensor, targets: torch.Tensor) -> float:
     # Simplified GAP@1 metric: only one prediction per sample is supported
-    # FIXME: ----->>>> MAYBE NEED TO CHANGE THE GAP METRIC METHOD
-    # https://www.kaggle.com/davidthaler/gap-metric
-    # FIXME: or change to something completely else.
     assert len(predicts.shape) == 1
     assert len(confs.shape) == 1
     assert len(targets.shape) == 1
@@ -196,51 +194,57 @@ class EfficientNetEncoderHead(nn.Module):
         return x
 
 # Training
-def train_step(train_loader, model, criterion, optimizer, epoch):
-    print(f'epoch {epoch}')
-    batch_time = AverageMeter() # AverageMeter is the metrics class
-    losses = AverageMeter()
-    avg_score = AverageMeter()
-
-    model.train()
-    num_steps = len(train_loader)
-
-    print(f'total batches: {num_steps}')
-
-    end = time.time()
-    
-    original_stdout = sys.stdout
+def train_step(train_loader, model, criterion, optimizer):
     with open('baseline epoch=10 min_sample=10.txt', 'w') as f: 
       sys.stdout = f
-      print("\nepoch    batch             time    (avg time)        loss   (avg loss)    GAP score   (avg score)")
-      print("---------------------------------------------------------------------------------------------------------")
-      for i, data in enumerate(train_loader):
-          input_ = data['image']
-          target = data['target']
-          batch_size, _, _, _ = input_.shape
+      #print(f'epoch {epoch}')
+      batch_time = AverageMeter() # AverageMeter is the metrics class
+      losses = AverageMeter()
+      avg_score = AverageMeter()
   
-          output = model(input_.cuda())
-          loss = criterion(output, target.cuda())
-          confs, predicts = torch.max(output.detach(), dim=1)
-          avg_score.update(GAP(predicts, confs, target))
-          losses.update(loss.data.item(), input_.size(0))
-          optimizer.zero_grad()
-          loss.backward()
-          optimizer.step()
+      model.train()
+      num_steps = len(train_loader)
   
-          batch_time.update(time.time() - end)
-          end = time.time()
+      print(f'total batches: {num_steps}')
   
-          if i % LOG_FREQ == 0:
-              print(f'{epoch}     |  [{i}/{num_steps}]\t||'
-                    f' {batch_time.val:.3f} | ({batch_time.avg:.3f})\t||'
-                    f' {losses.val:.4f} | ({losses.avg:.4f})\t||'
-                    f' {avg_score.val:.4f}   |   ({avg_score.avg:.4f})\t||')
-  
-      print(f' * average GAP on train {avg_score.avg:.4f}')
-      sys.stdout = original_stdout
+      end = time.time()
+      
+      original_stdout = sys.stdout
+
+      for epoch in range(1,EPOCHS+1):
+          print("\nepoch    batch             time    (avg time)        loss   (avg loss)    GAP score   (avg score)")
+          print("---------------------------------------------------------------------------------------------------------")
+     
+          for i, data in enumerate(train_loader):
+              input_ = data['image']
+              target = data['target']
+              batch_size, _, _, _ = input_.shape
+      
+              output = model(input_.cuda())
+              loss = criterion(output, target.cuda())
+              confs, predicts = torch.max(output.detach(), dim=1)
+              avg_score.update(GAP(predicts, confs, target))
+              losses.update(loss.data.item(), input_.size(0))
+              optimizer.zero_grad()
+              loss.backward()
+              optimizer.step()
+      
+              batch_time.update(time.time() - end)
+              end = time.time()
+      
+              if i % LOG_FREQ == 0:
+                  print(f'{epoch}     |  [{i}/{num_steps}]\t||'
+                        f' {batch_time.val:.3f} | ({batch_time.avg:.3f})\t||'
+                        f' {losses.val:.4f} | ({losses.avg:.4f})\t||'
+                        f' {avg_score.val:.4f}   |   ({avg_score.avg:.4f})\t||')
+      
+          print(f' * average GAP on train {avg_score.avg:.4f}')
+          sys.stdout = original_stdout
     
     torch.save(model.state_dict(), MODEL_PATH)
+
+def concat(label: np.ndarray, conf: np.ndarray) -> str:
+        return ' '.join([f'{L} {c}' for L, c in zip(label, conf)])
 
 # Inference (evaluation) Function
 def inference(data_loader, model, label_encoder):
@@ -249,30 +253,31 @@ def inference(data_loader, model, label_encoder):
 
     activation = nn.Softmax(dim=1)
     all_predicts, all_confs, all_targets = [], [], []
-
+    
     with torch.no_grad():
         for i, data in enumerate(tqdm(data_loader)):
-            input_, target = data['image'], data['target']
+            input_ = data['image']
             output = model(input_.cuda())
-            output = activation(output)
-
-            confs, predicts = torch.topk(output, NUM_TOP_PREDICTS)
+            output = activation(output)           
+            confs, predicts = torch.topk(output, len(data_loader))
             all_confs.append(confs)
             all_predicts.append(predicts)
 
-            if target is not None:
-                all_targets.append(target)
-
     predicts = torch.cat(all_predicts)
     confs = torch.cat(all_confs)
-    targets = torch.cat(all_targets) if len(all_targets) else None
-
     predicts_, confs_ = predicts.cpu().numpy(), confs.cpu().numpy()
     labels = [label_encoder.inverse_transform(pred) for pred in predicts_]
     print('labels')
+    print(len(labels))
     print(np.array(labels))
     print('confs')
+    print(len(confs_))
     print(np.array(confs_))
+
+    results = test_loader.dataset.df
+    results['landmarks'] = [concat(label, conf) for label, conf in zip(labels, confs)]
+    results = results.set_index('id')
+    results.to_csv('results.csv')
 
 # Main
 if __name__ == '__main__':
@@ -286,9 +291,10 @@ if __name__ == '__main__':
 
     optimizer = radam(model.parameters(), lr=1e-3, betas=(0.9, 0.999), eps=1e-3, weight_decay=1e-4)
 
-    for epoch in range(1,11):
-        print('!' * 75)
-        train_step(train_loader, model, criterion, optimizer, epoch)
+    #train_step(train_loader, model, criterion, optimizer)
 
-    #print('inference mode')
-    #inference(test_loader, model, label_encoder)
+    print('inference mode')
+    inference(test_loader, model, label_encoder)
+    
+
+    
