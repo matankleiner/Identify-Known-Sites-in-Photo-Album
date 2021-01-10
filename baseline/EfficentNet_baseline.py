@@ -1,7 +1,5 @@
 # !/usr/bin/env python3.6
 
-# based on the code - https://www.kaggle.com/rhtsingh/pytorch-training-inference-efficientnet-baseline by sourcecode369
-
 import sys
 import os
 import gc
@@ -24,14 +22,17 @@ import torch_optimizer as optim  # documentation - https://pytorch-optimizer.rea
 import warnings
 warnings.filterwarnings("ignore")
 
+# based on the code - https://www.kaggle.com/rhtsingh/pytorch-training-inference-efficientnet-baseline by sourcecode369
+
 # Train Configuration 
-MIN_SAMPLES_PER_CLASS = 50  # threshold for total number of images in a class. if a class has less than this then it will be discarded from the training set.
+MIN_SAMPLES_PER_CLASS = 10  # threshold for total number of images in a class. if a class has less than this then it will be discarded from the training set.
 BATCH_SIZE = 64
 LOG_FREQ = 10
-EPOCHS = 2
+EPOCHS = 10
 MODEL_PATH = "min_samples_per_class_" + str(MIN_SAMPLES_PER_CLASS) + "_" + str(EPOCHS) + "epochs.pt"
 LOSS_PATH = "loss_min_samples_per_class_" + str(MIN_SAMPLES_PER_CLASS) + "_" + str(EPOCHS) + "epochs.csv"
 TRAINING_PATH = "baseline training process with min_samples_per_class_" + str(MIN_SAMPLES_PER_CLASS) + "_" + str(EPOCHS) + "epochs.txt" 
+RESULT_PATH = "results_min_samples_per_class_" + str(MIN_SAMPLES_PER_CLASS) + "_" + str(EPOCHS) + "epochs.txt" 
 
 # Read Train and Test as pandas data frame
 train = pd.read_csv('train_set_kaggle_2020/train/train.csv')
@@ -282,17 +283,6 @@ def train_step(train_loader, model, criterion, optimizer):
     torch.save(model.state_dict(), MODEL_PATH) # save the learned model
     print("Saved model @", MODEL_PATH)
     
-def concat(label, conf):
-    """
-    Concatenate labels and confidence
-    Param:
-        label (np.ndarray): The labels projected by the network
-        conf (np.ndarray): The confidence of each label
-    Return:
-        (string): The string of the concatenated label and confidence
-    """
-    return ' '.join([f'{L} {c}' for L, c in zip(label, conf)])
-
 def inference(data_loader, model, label_encoder):
     """
     Evaluation.
@@ -302,33 +292,25 @@ def inference(data_loader, model, label_encoder):
         label_encoder (LabelEncoder): label_encoder as returned from @func load_data
     """
     model.load_state_dict(torch.load(MODEL_PATH)) # load the learned model
+    print("Loaded model @", MODEL_PATH)
     model.eval()
 
     activation = nn.Softmax(dim=1)
     all_predicts, all_confs, all_targets = [], [], []
+    results = {}
     
     with torch.no_grad():
-        for i, data in enumerate(tqdm(data_loader)):
+        for i, data in enumerate(tqdm(test_loader)):
             input_ = data['image']
             output = model(input_.cuda())
             output = activation(output)           
-            confs, predicts = torch.topk(output, len(data_loader)) # confidence and predicts of the network
-            all_confs.append(confs)
-            all_predicts.append(predicts)
+            confs, predicts = torch.topk(output, 5) # top 5 confidence and predicts of the network
+            predicts_, confs_ = predicts.cpu().numpy(), confs.cpu().numpy()
+            labels = [label_encoder.inverse_transform(pred) for pred in predicts_] 
+            results[i] = labels[0]
 
-    predicts = torch.cat(all_predicts)
-    confs = torch.cat(all_confs)
-    predicts_, confs_ = predicts.cpu().numpy(), confs.cpu().numpy()
-    labels = [label_encoder.inverse_transform(pred) for pred in predicts_]
-    print('Labels:')
-    print(np.array(labels))
-    print('Confidence')
-    print(np.array(confs_))
-
-    results = test_loader.dataset.df
-    results['landmarks'] = [concat(label, conf) for label, conf in zip(labels, confs)]
-    results = results.set_index('id')
-    results.to_csv('results.csv') # save results as CSV file
+    results_df = pd.DataFrame.from_dict(results)
+    results_df.to_csv(RESULT_PATH) # save results as CSV file
 
 if __name__ == '__main__':
     #global_start_time = time.time()
