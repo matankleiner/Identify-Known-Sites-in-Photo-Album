@@ -1,11 +1,13 @@
 # !/usr/bin/env python3.6
 
+# based on the code - https://www.kaggle.com/rhtsingh/pytorch-training-inference-efficientnet-baseline by sourcecode369
+
 import sys
 import os
 import gc
 gc.enable()
-
 import time
+
 import pandas as pd
 import numpy as np
 from PIL import Image
@@ -22,21 +24,19 @@ import torch_optimizer as optim  # documentation - https://pytorch-optimizer.rea
 import warnings
 warnings.filterwarnings("ignore")
 
-# based on the code - https://www.kaggle.com/rhtsingh/pytorch-training-inference-efficientnet-baseline by sourcecode369
-
 # Train Configuration 
-MIN_SAMPLES_PER_CLASS = 10  # threshold for total number of images in a class. if a class has less than this then it will be discarded from the training set.
+MIN_SAMPLES_PER_CLASS = 10 # threshold for total number of images in a class. if a class has less than this then it will be discarded from the training set.
 BATCH_SIZE = 64
 LOG_FREQ = 10
 EPOCHS = 10
 MODEL_PATH = "min_samples_per_class_" + str(MIN_SAMPLES_PER_CLASS) + "_" + str(EPOCHS) + "epochs.pt"
 LOSS_PATH = "loss_min_samples_per_class_" + str(MIN_SAMPLES_PER_CLASS) + "_" + str(EPOCHS) + "epochs.csv"
 TRAINING_PATH = "baseline training process with min_samples_per_class_" + str(MIN_SAMPLES_PER_CLASS) + "_" + str(EPOCHS) + "epochs.txt" 
-RESULT_PATH = "results_min_samples_per_class_" + str(MIN_SAMPLES_PER_CLASS) + "_" + str(EPOCHS) + "epochs.txt" 
+RESULT_PATH = "results_no_out_of_domain_min_samples_per_class_" + str(MIN_SAMPLES_PER_CLASS) + "_" + str(EPOCHS) + "epochs.csv" 
 
 # Read Train and Test as pandas data frame
 train = pd.read_csv('train_set_kaggle_2020/train/train.csv')
-test = pd.read_csv('test_set_kaggle_2019/recognition_solution_v2.1.csv')
+test = pd.read_csv('test_set_kaggle_2019/test_no_out_of_domain.csv')
 # path to train and test directory
 train_dir = 'train_set_kaggle_2020/train/'
 test_dir = 'test_set_kaggle_2019/'
@@ -147,7 +147,7 @@ def load_data(train, test, train_dir, test_dir):
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE,
                               shuffle=False, num_workers=4,
                               drop_last=True)
-    test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE,
+    test_loader = DataLoader(test_dataset, batch_size=1,
                              shuffle=False, num_workers=4)
 
     return train_loader, test_loader, label_encoder, num_classes
@@ -317,14 +317,15 @@ if __name__ == '__main__':
     train_loader, test_loader, label_encoder, num_classes = load_data(train, test, train_dir, test_dir)
     model = EfficientNetEncoderHead(depth=0, num_classes=num_classes)
     model.cuda()
+    print("current device: ", torch.cuda.current_device())
     criterion = nn.CrossEntropyLoss()
     optimizer = radam(model.parameters(), lr=1e-3, betas=(0.9, 0.999), eps=1e-3, weight_decay=1e-4)
 
-    print("Training Mode ---> Write training process to file")
-    train_step(train_loader, model, criterion, optimizer)
+    #print("Training Mode ---> Write training process to file")
+    #train_step(train_loader, model, criterion, optimizer)
         
-    #print('Evaluation Mode')
-    #inference(test_loader, model, label_encoder)
+    print('Evaluation Mode')
+    inference(test_loader, model, label_encoder)
     
 
     
