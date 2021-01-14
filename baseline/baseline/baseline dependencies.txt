@@ -1,9 +1,11 @@
 pandas 
 numpy 
-PIL 
+PIllow
 sklearn 
 torch 
 torchvision 
 tqdm 
 efficientnet_pytorch
 torch_optimizer
+
+
