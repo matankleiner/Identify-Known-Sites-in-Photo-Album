@@ -1,9 +1,10 @@
 # !/usr/bin/env python3.6
 
 """
-This script create a file contain the absolute path of all the files in the directories and subdirectories.
-The file "train.txt" is used in the darknet-YOLO implementation in order to detect all the images in the test set. 
+This script create a file contain the absolute path of all the files in "test_set_kaggle_2019" subdirectories.
+The file "train.txt" is used in the darknet-YOLO implementation in order to detect object in the test set images. 
 """
+
 import os, sys
 
 original_stdout = sys.stdout 
