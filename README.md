@@ -13,6 +13,8 @@
 [![shield](https://img.shields.io/badge/sklearn-0.21.3-green)](https://scikit-learn.org/stable/)
 [![shield](https://img.shields.io/badge/PIllow-6.1.0-green)](https://pillow.readthedocs.io/en/stable/)
 [![shield](https://img.shields.io/badge/tqdm-4.55.0-green)](https://github.com/tqdm/tqdm)
+[![shield](https://img.shields.io/badge/yolo-v3-orange)](https://pjreddie.com/darknet/yolo/)
+[![shield](https://img.shields.io/badge/yolo-v4-orange)](https://github.com/AlexeyAB/darknet)
 
 ## Introduction:
 
@@ -32,6 +34,8 @@ To run the whole code of this project, one needs the following libraries (in the
 | sklearn | 0.21.3 |
 | PIlow | 6.1.0 |
 | tqdm | 4.55.0 |
+
+In this project we also used [YOLO darknet]("https://github.com/AlexeyAB/darknet") implementation as an object detector. We used version 3 and version 4. 
 
 ## Team:
 
