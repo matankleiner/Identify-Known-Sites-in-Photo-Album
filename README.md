@@ -14,6 +14,7 @@
 [![shield](https://img.shields.io/badge/PIllow-6.1.0-green)](https://pillow.readthedocs.io/en/stable/)
 [![shield](https://img.shields.io/badge/tqdm-4.55.0-green)](https://github.com/tqdm/tqdm)
 
+## Introduction:
 
 ## Prerequisites
 To run the whole code of this project, one needs the following libraries (in the specified version or higher):
@@ -32,3 +33,10 @@ To run the whole code of this project, one needs the following libraries (in the
 | PIlow | 6.1.0 |
 | tqdm | 4.55.0 |
 
+## Team:
+
+Matan Kleiner 
+
+Yuval Snir 
+
+under the guidance of Ori Linial
