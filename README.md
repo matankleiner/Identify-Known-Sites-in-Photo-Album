@@ -1,7 +1,7 @@
 # Identify Known Sites in Photo Album
  
-[![shield](https://img.shields.io/badge/deep-learning-red)](https://www.python.org/)
-[![shield](https://img.shields.io/badge/python-3.6-blue)](http://wiki.ros.org/kinetic)
+[![shield](https://img.shields.io/badge/deep-learning-red)]
+[![shield](https://img.shields.io/badge/python-3.6-blue)](https://www.python.org/)
 [![shield](https://img.shields.io/badge/torch-1.8.0-green)](https://pytorch.org/)
 [![shield](https://img.shields.io/badge/torchvision-0.9.0-green)](http://pytorch.org/vision/stable/index.html)
 [![shield](https://img.shields.io/badge/sklearn-0.21.3-green)](https://scikit-learn.org/stable/)
