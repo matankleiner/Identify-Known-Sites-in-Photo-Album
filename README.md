@@ -13,8 +13,11 @@
 [![shield](https://img.shields.io/badge/sklearn-0.21.3-green)](https://scikit-learn.org/stable/)
 [![shield](https://img.shields.io/badge/PIllow-6.1.0-green)](https://pillow.readthedocs.io/en/stable/)
 [![shield](https://img.shields.io/badge/tqdm-4.55.0-green)](https://github.com/tqdm/tqdm)
-[![shield](https://img.shields.io/badge/yolo-v3-orange)](https://pjreddie.com/darknet/yolo/)
-[![shield](https://img.shields.io/badge/yolo-v4-orange)](https://github.com/AlexeyAB/darknet)
+[![shield](https://img.shields.io/badge/yolo-v3-yellow)](https://pjreddie.com/darknet/yolo/)
+[![shield](https://img.shields.io/badge/yolo-v4-yellow)](https://github.com/AlexeyAB/darknet)
+[![shield](https://img.shields.io/badge/GLD-v2-red)](https://storage.googleapis.com/gld-v2/web/index.html)
+[![shield](https://img.shields.io/badge/OpenImagesDataset-v4-red)](https://storage.googleapis.com/openimages/web/factsfigures_v4.html)
+[![shield](https://img.shields.io/badge/COCO-Dataset-red)](https://storage.googleapis.com/gld-v2/web/index.html)
 
 ## Introduction:
 
