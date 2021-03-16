@@ -1,6 +1,6 @@
 # Identify Known Sites in Photo Album
  
-[![shield](https://img.shields.io/badge/deep-learning-red)]
+[![shield](https://img.shields.io/badge/machine-learning-red)](https://memegenerator.net/instance/55888623/x-x-everywhere-machine-learning-machine-learning-everywhere)
 [![shield](https://img.shields.io/badge/python-3.6-blue)](https://www.python.org/)
 [![shield](https://img.shields.io/badge/torch-1.8.0-green)](https://pytorch.org/)
 [![shield](https://img.shields.io/badge/torchvision-0.9.0-green)](http://pytorch.org/vision/stable/index.html)
