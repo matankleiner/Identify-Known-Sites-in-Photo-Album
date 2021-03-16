@@ -16,6 +16,7 @@
 
 
 ## Prerequisites
+To run the whole code of this project, one needs the following libraries (in the specified version or higher):
 | Library | Version |
 | ------------- | ------------- |
 | Python | 3.6 |
