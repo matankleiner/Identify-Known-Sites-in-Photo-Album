@@ -1,11 +1,11 @@
-pandas 
-numpy 
-PIllow
-sklearn 
-torch 
-torchvision 
-tqdm 
-efficientnet_pytorch
-torch_optimizer
+python 3.6 
 
-
+pandas (version 0.25.0) 
+numpy (version 1.19.5) 
+PIllow (version 6.1.0) 
+sklearn (version 0.21.3) 
+torch (version 1.8.0)  
+torchvision (version 0.9.0) 
+tqdm (version 4.55.0) 
+efficientnet_pytorch (version 0.7.0) 
+torch_optimizer (version 0.1.0) 

@@ -2,6 +2,11 @@
 
 # based on the code - https://www.kaggle.com/rhtsingh/pytorch-training-inference-efficientnet-baseline by sourcecode369
 
+"""
+This is a baseline model for our project.
+In this cose we train and evalute an EfficientNet CNN on the GLDv2.
+"""
+
 import sys
 import os
 import gc
@@ -37,7 +42,7 @@ RESULT_PATH = "results_min_samples_per_class_" + str(MIN_SAMPLES_PER_CLASS) + "_
 # Read Train and Test as pandas data frame
 train = pd.read_csv('train_set_kaggle_2020/train/train.csv')
 test = pd.read_csv('test_set_kaggle_2019/test.csv')
-# path to train and test directory
+# Path to train and test directory
 train_dir = 'train_set_kaggle_2020/train/'
 test_dir = 'test_set_kaggle_2019/'
 
@@ -99,9 +104,9 @@ class ImageDataset(Dataset):
             (Dictionary): Each image path. If 'train' mode also each image class.
         """
         image_id = self.df.iloc[index].id
-        image_path = f"{self.image_dir}/{image_id[0]}/{image_id[1]}/{image_id[2]}/{image_id}.jpg" # image path as image divided into different directories
+        image_path = f"{self.image_dir}/{image_id[0]}/{image_id[1]}/{image_id[2]}/{image_id}.jpg" # Image path as image divided into different directories
         image = Image.open(image_path)
-        image = self.transforms(image)  # apply the chosen transformation on a given image
+        image = self.transforms(image)  # Apply the chosen transformation on a given image
 
         if self.mode == 'test':
             return {'image': image}
@@ -125,7 +130,7 @@ def load_data(train, test, train_dir, test_dir):
           num_classes (int): Number of classes with at least MIN_SAMPLES_PER_CLASS
     """
     counts = train.landmark_id.value_counts() # value_counts() return a Series containing counts of unique values
-    selected_classes = counts[counts >= MIN_SAMPLES_PER_CLASS].index  # select only classes with minimum amount of objects
+    selected_classes = counts[counts >= MIN_SAMPLES_PER_CLASS].index  # Select only classes with minimum amount of objects
     num_classes = selected_classes.shape[0]
     print(f'Classes with at least {MIN_SAMPLES_PER_CLASS} samples:', num_classes)
 
