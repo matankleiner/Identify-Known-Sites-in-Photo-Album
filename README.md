@@ -30,9 +30,10 @@ In face of the special and challenging features of the data set, we proposed and
 
 The first solution, a baseline, is a simple straight forward aprrocah, training a CNN (EfficientNet using RAdam optimizer) and use it as a classifier. This solution faile to overcome the challenging aspects of the data set and yields poor results.
 
-The second solution is a retrival based soultion that derive inspiration from other teams soultion to this competition. This solution consist of two steps, the first is to clean the test set from out of domain images using object detection (we used [YOLO darknet](https://github.com/AlexeyAB/darknet) implementation) and the second is classification using nearest neighbor algorithm, using the images features vector. This soultuin is built to face on the challenging features of the data set and although the solution it yields are far from great they are better than the baseline's results.    
+The second solution is a retrival based soultion that derive inspiration from other teams soultion to this competition. This solution consist of two steps, the first is to clean the test set from out of domain images using object detection (we used [YOLO darknet](https://github.com/AlexeyAB/darknet) implementation) and the second is classification using nearest neighbor algorithm, using the images features vector. This soultuin is built to face on the challenging features of the data set and although the solution it yields are far from great they are better than the baseline's results.  
 
 ## Prerequisites
+
 To run the whole code of this project, one needs the following libraries (in the specified version or higher):
 | Library | Version |
 | ------------- | ------------- |
