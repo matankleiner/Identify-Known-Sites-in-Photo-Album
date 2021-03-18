@@ -1,7 +1,7 @@
 # !/usr/bin/env python3.6
 
 """
-In this code we'll take the test and train set images and turn them into feature vector.
+In this script we'll take the test and train set images and turn them into feature vector.
 We'll use torchvision's ResNet-18 pre-trained model last pooling layer.
 """
 
@@ -57,7 +57,6 @@ def img2vec(image):
 
     return embedding
 
-"""
 # Convert all the train set images to feature vectors
 embedded_data = []
 labels = []
@@ -70,9 +69,8 @@ for i in tqdm(range(train_df.shape[0])):
     embedded_data.append(feature_vector.numpy()) # Save the feature vector of each image
     labels.append( train_df["landmark_id"][i]) # Save the label of each image
 
-torch.save(embedded_data111, 'embedded_data.pt')
-torch.save(labels111, 'labels.pt')
-"""
+torch.save(embedded_data, 'embedded_data.pt')
+torch.save(labels, 'labels.pt')
 
 # Convert all the test set images to feature vectors
 embedded_test = []

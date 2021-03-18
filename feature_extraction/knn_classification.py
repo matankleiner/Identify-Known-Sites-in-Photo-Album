@@ -1,5 +1,11 @@
 # !/usr/bin/env python3.6
 
+"""
+In this script we're using KNN Classifier (from scklearn) to predict the correct class for each test set image. 
+Because of the very large embedded data set (4.4 Gb of data) and the very large test set (0.33 Gb of data) the prediction
+process was very long and took 121028.36078858376 seconds, i.e. 1.4 days. 
+"""
+
 import torch
 from sklearn.neighbors import KNeighborsClassifier
 import numpy as np 
