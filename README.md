@@ -22,7 +22,7 @@
 
 ## Introduction:
 
-This is a university project based on the [Google Landmark Recognition 2020 kaggle competiton.](https://www.kaggle.com/c/landmark-recognition-2020). 
+This is a university project based on the [Google Landmark Recognition 2020 kaggle competiton.](https://www.kaggle.com/c/landmark-recognition-2020)
 
 The goal in this project is to classify successfully images of known sites from around the world, given big and challenging train set to learn from and a test set that contain mainly out of domain images.  
 
