@@ -51,3 +51,13 @@ Matan Kleiner
 Yuval Snir 
 
 under the guidance of Ori Linial
+
+## References
+
+[1] T. Weyand, A. Araujo, B. Cao and J. Sim, Proc.  
+	"Google Landmarks Dataset v2 - A Large-Scale Benchmark for 	Instance-Level Recognition and Retrieval", CVPR'20
+[2] K. Chen et-al  
+	“2nd Place and 2nd Place Solution to Kaggle Landmark 	Recognition and Retrieval Competition 2019", arXiv:1906.03990 	[cs.CV], Jun. 2019.
+![image](https://user-images.githubusercontent.com/63591190/111691365-e6fec580-8836-11eb-9916-b4b279d287b3.png)
+
+
