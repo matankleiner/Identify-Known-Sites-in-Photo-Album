@@ -32,6 +32,11 @@ The first solution, a baseline, is a simple straight forward aprrocah, training 
 
 The second solution is a retrival based soultion that derive inspiration from other teams soultion to this competition. This solution consist of two steps, the first is to clean the test set from out of domain images using object detection (we used [YOLO darknet](https://github.com/AlexeyAB/darknet) implementation) and the second is classification using nearest neighbor algorithm, using the images features vector. This soultuin is built to face on the challenging features of the data set and although the solution it yields are far from great they are much better than the baseline's results.  
 
+## Code 
+The code we wrote for this project is organized in sub directories, so that there is a sub directory for each part of the project.
+Each sub directory contain the relevant code files (.py or .ipynb) and may contain csv files or images. 
+We tried to write the code so it will be organized and well documented. 
+
 ## Prerequisites
 
 To run the whole code of this project, one needs the following libraries (in the specified version or higher):
