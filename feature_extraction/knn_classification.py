@@ -8,10 +8,9 @@ process was very long and took 121028.36078858376 seconds, i.e. 1.4 days.
 
 import torch
 from sklearn.neighbors import KNeighborsClassifier
-import numpy as np 
+import pandas as pd 
 from tqdm import tqdm 
 import time 
-import pandas as pd 
 
 start = time.time()
 
