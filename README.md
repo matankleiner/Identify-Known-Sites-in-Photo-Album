@@ -37,6 +37,7 @@ The second solution is a retrival based soultion that derive inspiration from ot
 ## Code 
 The code we wrote for this project is organized in sub directories, so that there is a sub directory for each part of the project.
 Each sub directory contain the relevant code files (.py or .ipynb) and may contain csv files or images. 
+
 We tried to write the code so it will be organized and well documented. 
 
 ## Prerequisites
@@ -75,6 +76,10 @@ under the guidance of Ori Linial
 [1] T. Weyand, A. Araujo, B. Cao and J. Sim, Proc. "Google Landmarks Dataset v2 - A Large-Scale Benchmark for 	Instance-Level Recognition and Retrieval", CVPR'20
 
 [2] K. Chen et-al “2nd Place and 2nd Place Solution to Kaggle Landmark 	Recognition and Retrieval Competition 2019", arXiv:1906.03990 	[cs.CV], Jun. 2019.
+
+[3] J. Redmon and A. Farhadi. "YOLOv3: An Incremental Improvement", arXiv:1804.02767v1 [cs.CV] Apr. 2018.
+
+[4] A. Krizhevsky, I. Sutskever, and G. E. Hinton. "ImageNet classification with deep convolutional neural networks", In Proceedings of NIPS, pages 1106–1114, 2012.
 
 
 
