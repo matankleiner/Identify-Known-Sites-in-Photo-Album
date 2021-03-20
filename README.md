@@ -32,7 +32,7 @@ The first solution, a baseline, is a simple straight forward aprrocah, training 
 
 The second solution is a retrival based soultion that derive inspiration from other teams soultion to this competition. This solution consist of two steps, the first is to clean the test set from out of domain images using object detection (we used [YOLO darknet](https://github.com/AlexeyAB/darknet) implementation) and the second is classification using nearest neighbor algorithm, using the images features vector. This soultuin is built to face on the challenging features of the data set and although the solution it yields are far from great they are much better than the baseline's results.  
 
-![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/8556c1fff8acaeef_123095/123095_scheme.png)
+![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/8556c1fff8acaeef_123095/123095_nn.png)
 
 ## Code 
 The code we wrote for this project is organized in sub directories, so that there is a sub directory for each part of the project.
