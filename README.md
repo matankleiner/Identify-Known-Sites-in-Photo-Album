@@ -39,7 +39,9 @@ This solution consist of two steps, the first is to clean the test set from out 
 ![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/landmark_classifier/example_images/predictions1.jpg)
 ![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/7f15d65c538fd83b_62916/predictions_v3.jpg)
 
-The second is classification using nearest neighbor algorithm, using the images features vector. The power of using feature vectore and K-NN (the test set image is to the left, next to it there are the 5 nearest neighbors from the train set): 
+The second is classification using nearest neighbor algorithm, using the images features vector.
+
+The power of using feature vectore and K-NN (the test set image is to the left, next to it there are the 5 nearest neighbors from the train set): 
 
 ![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/fde4d840e5f7ae90_23777/23777_nn.png)
 ![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/7e77ce1f29338f90_18679/18679_nn.png)
