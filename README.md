@@ -32,9 +32,19 @@ In face of the special and challenging features of the data set, we proposed and
 
 The first solution, a baseline, is a simple straight forward aprrocah, training a CNN (EfficientNet using RAdam optimizer) and use it as a classifier. This solution faile to overcome the challenging aspects of the data set and yields poor results.
 
-The second solution is a retrival based soultion that derive inspiration from other teams soultion to this competition. This solution consist of two steps, the first is to clean the test set from out of domain images using object detection (we used [YOLO darknet](https://github.com/AlexeyAB/darknet) implementation) and the second is classification using nearest neighbor algorithm, using the images features vector. This soultuin is built to face on the challenging features of the data set and although the solution it yields are far from great they are much better than the baseline's results.  
+The second solution is a retrival based soultion that derive inspiration from other teams soultion to this competition.
+
+This solution consist of two steps, the first is to clean the test set from out of domain images using object detection (we used [YOLO darknet](https://github.com/AlexeyAB/darknet) implementation). Object detection examples: 
+
+![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/landmark_classifier/example_images/predictions1.jpg)
+
+The second is classification using nearest neighbor algorithm, using the images features vector. The power of using feature vectore and K-NN: 
 
 ![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/8556c1fff8acaeef_123095/120395_nn.png)
+![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/fde4d840e5f7ae90_23777/23777_nn.png)
+
+
+This soultuin is built to face on the challenging features of the data set and although the solution it yields are far from great they are much better than the baseline's results.  
 
 ## Code 
 The code we wrote for this project is organized in sub directories, so that there is a sub directory for each part of the project.
