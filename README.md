@@ -20,6 +20,8 @@
 [![shield](https://img.shields.io/badge/OpenImagesDataset-v4-red)](https://storage.googleapis.com/openimages/web/factsfigures_v4.html)
 [![shield](https://img.shields.io/badge/COCO-Dataset-red)](https://storage.googleapis.com/gld-v2/web/index.html)
 
+![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/images/project_scheme.gif)
+
 ## Introduction:
 
 This is a university project based on the [Google Landmark Recognition 2020 kaggle competiton.](https://www.kaggle.com/c/landmark-recognition-2020)
