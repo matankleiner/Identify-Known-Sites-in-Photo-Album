@@ -45,6 +45,7 @@ The power of using feature vectore and K-NN (the test set image is to the left, 
 
 ![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/fde4d840e5f7ae90_23777/23777_nn.png)
 ![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/7e77ce1f29338f90_18679/18679_nn.png)
+![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/be4baf42da3b0d36_39334/39334_nn.png)
 
 This soultuin is built to face on the challenging features of the data set and although the solution it yields are far from great they are much better than the baseline's results.  
 
