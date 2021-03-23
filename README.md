@@ -20,7 +20,7 @@
 [![shield](https://img.shields.io/badge/OpenImagesDataset-v4-red)](https://storage.googleapis.com/openimages/web/factsfigures_v4.html)
 [![shield](https://img.shields.io/badge/COCO-Dataset-red)](https://storage.googleapis.com/gld-v2/web/index.html)
 
-![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/images/project_scheme.gif)
+![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/images/project_scheme_gif.gif)
 
 ## Introduction:
 
