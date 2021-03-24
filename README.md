@@ -41,7 +41,7 @@ This solution consist of two steps, the first is to clean the test set from out 
 
 The second is classification using nearest neighbor algorithm, using the images features vector.
 
-The power of using feature vectore and K-NN (the test set image is to the left, next to it there are the 5 nearest neighbors from the train set): 
+The power of using feature vectore and K-NN (the test set image is to the left, next to it there are the 5 nearest neighbors from the train set. If there is a small res X in the lower right corner of the image, it means that this image class is not as the test set image): 
 
 ![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/fde4d840e5f7ae90_23777/23777_nn.png)
 ![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/7e77ce1f29338f90_18679/18679_nn.png)
