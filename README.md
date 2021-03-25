@@ -47,6 +47,10 @@ The power of using feature vectore and K-NN (the test set image is to the left, 
 ![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/7e77ce1f29338f90_18679/18679_nn.png)
 ![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/be4baf42da3b0d36_39334/39334_nn.png)
 
+Even when the classification is not succesful, the nearest neighbors still have some resemblance to the test set image: 
+
+![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/results_and_evaluation/wrong_prediction/e153105026e18260_150977/150977_nn.png)
+
 This solution is built to face on the challenging features of the data set and although the solution it yields are far from great they are much better than the baseline's results.  
 
 ## Code 
