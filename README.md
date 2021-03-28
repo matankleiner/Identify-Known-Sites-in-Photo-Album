@@ -88,7 +88,7 @@ Matan Kleiner
 
 Yuval Snir 
 
-under the guidance of Ori Linial
+Supervised by Ori Linial
 
 ## References
 
