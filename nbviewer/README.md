@@ -1,6 +1,6 @@
 # Links for Jupyter Notebooks
 
-For some reason github faile to render all the jupyter notebooks in this repo. In this file there will be links to a nbviewer of all the jupyter notebooks. 
+For some reason GitHub failes to render all the jupyter notebooks in this repo. In this file there will be links to a nbviewer of all the jupyter notebooks. 
 
 ## Data 
 
