@@ -80,7 +80,7 @@ To run the whole code of this project, one needs the following libraries (in the
 
 In this project we also used [YOLO darknet](https://github.com/AlexeyAB/darknet) implementation as an object detector. We used version 3 and version 4 network that were pre trained on [Open Images Dataset](https://storage.googleapis.com/openimages/web/factsfigures_v4.html) and [COCO Dataset](https://storage.googleapis.com/gld-v2/web/index.html) accordingly. 
 
-Many of the code in this project is part of a [jupyter notebook](https://jupyter.org/). Unfortunately, GitHub is not able to render successfully all the notebooks, so one can download them and run them locally or via colab. 
+Many of the code in this project is part of a [jupyter notebook](https://jupyter.org/). Unfortunately, GitHub is not able to render successfully all the notebooks, so one can download them and run them locally or via colab or view them using nbviewer with the links in the [nbviewer directory.](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/nbviewer/README.md)
 
 ## Team:
 
