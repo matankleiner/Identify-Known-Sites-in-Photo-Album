@@ -53,34 +53,45 @@ Even when the classification is not succesful, the nearest neighbors still have 
 
 This solution is built to face on the challenging features of the data set and although the solution it yields are far from great they are much better than the baseline's results.  
 
-## Code 
-The code we wrote for this project is organized in sub directories, so that there is a sub directory for each part of the project.
-Each sub directory contain the relevant code files (.py or .ipynb) and may contain csv files or images. 
-
-We tried to write the code so it will be organized and well documented. 
-
 ## Prerequisites
 
 To run the whole code of this project, one needs the following libraries (in the specified version or higher):
 | Library | Version |
 | ------------- | ------------- |
-| Python | 3.6 |
-| torch | 1.8.0 |
-| torchvision | 0.9.0 |
-| pandas | 1.25.0 |
-| numpy | 1.19.0 |
-| opencv | 4.2.0 |
-| matplotlib | 3.2.1 |
-| seaborn | 0.11.0 |
-| efficientnet_pytorch | 0.7.0 |
-| torch_optimizer | 0.1.0 |
-| sklearn | 0.21.3 |
-| PIlow | 6.1.0 |
-| tqdm | 4.55.0 |
+| `Python` | `3.6` |
+| `torch` | `1.8.0` |
+| `torchvision` | `0.9.0` |
+| `pandas` | `1.25.0` |
+| `numpy` | `1.19.0` |
+| `opencv` | `4.2.0` |
+| `matplotlib` | `3.2.1` |
+| `seaborn` | `0.11.0` |
+| `efficientnet_pytorch` | `0.7.0` |
+| `torch_optimizer` | `0.1.0` |
+| `sklearn` | `0.21.3` |
+| `PIlow` | `6.1.0` |
+| `tqdm` | `4.55.0` |
 
 In this project we also used [YOLO darknet](https://github.com/AlexeyAB/darknet) implementation as an object detector. We used version 3 and version 4 network that were pre trained on [Open Images Dataset](https://storage.googleapis.com/openimages/web/factsfigures_v4.html) and [COCO Dataset](https://storage.googleapis.com/gld-v2/web/index.html) accordingly. 
 
 Many of the code in this project is part of a [jupyter notebook](https://jupyter.org/). Unfortunately, GitHub is not able to render successfully all the notebooks, so one can download them and run them locally or via colab or view them using nbviewer with the links in the [nbviewer directory.](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/nbviewer/README.md)
+
+## Code and Repository Organization 
+The code we wrote for this project is organized in sub directories, so that there is a sub directory for each part of the project.
+Each sub directory contain the relevant code files (.py or .ipynb) and may contain csv files or images. 
+
+| Sub-Directory | Content |
+| ------------- | ------------- |
+| `\baseline` | directory containing implementation of the baseline, results and evaluation  |
+| `\data` | directory containing GLDv2 dataset analysis |
+| `\feature_extraction` | directory containing implementation of feature extraction and K-NN classifier |
+| `\images` | directory containing images used in this repository |
+| `\landmark_classifier` | directory containing pre-process of the data as input to YOLO Darknet implementation and results analysis and evaluation |
+| `nbviewer` | directory containing nbviewer links for the jupyter notebook in this repository |
+| `poster` | directory containing the project poster |
+| `results_and_evaluation` | directory containing the classification results and evaluation |
+
+We tried to write the code so it will be organized and well documented. 
 
 ## Team:
 
