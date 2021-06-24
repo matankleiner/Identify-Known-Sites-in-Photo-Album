@@ -87,9 +87,9 @@ Each sub directory contain the relevant code files (.py or .ipynb) and may conta
 | `\feature_extraction` | directory containing implementation of feature extraction and K-NN classifier |
 | `\images` | directory containing images used in this repository |
 | `\landmark_classifier` | directory containing pre-process of the data as input to YOLO Darknet implementation and its results analysis and evaluation |
-| `nbviewer` | directory containing nbviewer links for the jupyter notebook in this repository |
-| `poster` | directory containing the project poster |
-| `results_and_evaluation` | directory containing the classification results and evaluation |
+| `\nbviewer` | directory containing nbviewer links for the jupyter notebook in this repository |
+| `\poster` | directory containing the project poster |
+| `\results_and_evaluation` | directory containing the classification results and evaluation |
 
 We tried to write the code so it will be organized and well documented. 
 
