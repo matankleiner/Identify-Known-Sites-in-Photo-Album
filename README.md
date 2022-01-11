@@ -22,6 +22,13 @@
 
 ![alt text](https://github.com/matankleiner/Identify-Known-Sites-in-Photo-Album/blob/master/images/project_scheme_gif.gif)
 
+- [Identify Known Sites in Photo Album](#Identify-Known-Sites-in-Photo-Album)
+  * [Introduction](#Introduction)
+  * [Prerequisites](#prerequisites)
+  * [Code and Repository Organization ](#Code-and-Repository-Organization )
+  * [Team](#Team)
+  * [References](#references)
+
 ## Introduction:
 
 This is a university project based on the [Google Landmark Recognition 2020 kaggle competiton.](https://www.kaggle.com/c/landmark-recognition-2020)
